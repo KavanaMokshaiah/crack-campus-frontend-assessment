@@ -21,7 +21,7 @@ An enterprise-grade, high-performance campus placement platform engineered for e
 7. [Assumptions and Design Decisions](#assumptions-and-design-decisions)
 8. [Known Limitations](#known-limitations)
 9. [What Would Be Improved With Additional Time](#what-would-be-improved-with-additional-time)
-10. [Performance Report (Lighthouse Audit)](#performance-report-lighthouse-audit)
+10. [Lighthouse Performance Report](#lighthouse-performance-report)
 
 ---
 
@@ -35,8 +35,8 @@ An enterprise-grade, high-performance campus placement platform engineered for e
 
 1. **Clone the repository**:
    ```bash
-   git clone <your-repository-url>
-   cd my-react-app
+   git clone https://github.com/KavanaMokshaiah/crack-campus-frontend-assessment.git
+cd crack-campus-frontend-assessment
    ```
 
 2. **Install project dependencies**:
@@ -156,13 +156,15 @@ src/
 
 2. **Modern Image Formats & Responsive `<picture>` Delivery**:
    - High-resolution hero assets converted to next-generation **WebP** formats with fallbacks.
-   - Reduces asset payloads by **> 65%** compared to legacy PNG/JPEG files.
+   - Reduces asset payload size compared to the original PNG/JPEG assets.
 
 3. **Critical Resource Preconnecting**:
    - `index.html` leverages `<link rel="preconnect">` for Google Fonts (`fonts.googleapis.com` and `fonts.gstatic.com`), saving two round-trip network hops during font discovery.
 
-4. **Zero Layout Shift (CLS = 0.00)**:
-   - Explicit `width` and `height` aspect-ratio reservations on banners, buttons, and navigation elements prevent layout shifts during asset rendering.
+4. **Low Layout Shift**:
+
+   - Explicit sizing and stable layout containers help reduce unexpected movement during asset rendering.
+   - Latest deployed Lighthouse results measured CLS at **0.036 on desktop** and **0.102 on mobile**.
 
 5. **Pure SCSS Architecture (Zero Runtime CSS Overhead)**:
    - Unlike runtime CSS-in-JS libraries (e.g. styled-components) that parse styles on the main thread during execution, SCSS compiles down to a single compact stylesheet (`4.46 kB` gzip).
@@ -223,46 +225,63 @@ src/
 
 ---
 
-## Performance Report (Lighthouse Audit)
+## Lighthouse Performance Report
 
-Audits were conducted using Chrome DevTools Lighthouse 12 on the optimized production build (`npm run build` & `npm run preview`).
+Audited against the deployed Vercel application:
 
-### Summary Scores
+**Live URL:** https://crack-campus-frontend-assessment.vercel.app/
 
-| Category | Desktop Score | Mobile Score | Target Standard | Status |
-|---|:---:|:---:|:---:|:---:|
-| **Performance** | **99 / 100** | **94 / 100** | ≥ 90 |  Passed |
-| **Accessibility** | **100 / 100** | **100 / 100** | ≥ 90 |  Passed |
-| **Best Practices** | **100 / 100** | **100 / 100** | ≥ 90 |  Passed |
-| **SEO** | **100 / 100** | **100 / 100** | ≥ 90 |  Passed |
+| Metric | Mobile | Desktop |
+|---|---:|---:|
+| Performance | 93 | 99 |
+| Accessibility | 90 | 90 |
+| Best Practices | 100 | 100 |
+| SEO | 100 | 100 |
+| First Contentful Paint | 2.2 s | 0.6 s |
+| Largest Contentful Paint | 2.4 s | 0.9 s |
+| Total Blocking Time | 50 ms | 0 ms |
+| Cumulative Layout Shift | 0.102 | 0.036 |
+| Speed Index | 2.2 s | 0.6 s |
+
+### Performance Optimizations
+
+- Optimized hero imagery using responsive WebP assets.
+- Added separate desktop and mobile hero image variants.
+- Reduced image file sizes while maintaining visual quality.
+- Optimized the hero badge image.
+- Used responsive image delivery with `<picture>` and WebP sources.
+- Used `fetchPriority="high"` for the primary hero image.
+- Verified performance using Lighthouse against the deployed Vercel application.
 
 ---
 
 ### Detailed Desktop Metrics
 
-| Metric | Measured Value | Google Recommended Threshold | Evaluation |
-|---|---|---|---|
-| **First Contentful Paint (FCP)** | `0.4 s` | `< 1.8 s` | Fast |
-| **Largest Contentful Paint (LCP)** | `0.8 s` | `< 2.5 s` | Fast |
-| **Total Blocking Time (TBT)** | `0 ms` | `< 200 ms` | Zero Main-Thread Blocking |
-| **Cumulative Layout Shift (CLS)** | `0.000` | `< 0.1` | No Visual Shifting |
-| **Speed Index (SI)** | `0.6 s` | `< 3.4 s` | Fast |
+| Metric | Measured Value | Google Recommended Threshold |
+|---|---:|---:|
+| **First Contentful Paint (FCP)** | `0.6 s` | `< 1.8 s` |
+| **Largest Contentful Paint (LCP)** | `0.9 s` | `< 2.5 s` |
+| **Total Blocking Time (TBT)** | `0 ms` | `< 200 ms` |
+| **Cumulative Layout Shift (CLS)** | `0.036` | `< 0.1` |
+| **Speed Index (SI)** | `0.6 s` | `< 3.4 s` |
 
 ---
 
-### Detailed Mobile Metrics (Emulated Moto G4 on 4G Network)
+### Detailed Mobile Metrics
 
-| Metric | Measured Value | Google Recommended Threshold | Evaluation |
-|---|---|---|---|
-| **First Contentful Paint (FCP)** | `1.3 s` | `< 1.8 s` | Fast |
-| **Largest Contentful Paint (LCP)** | `1.9 s` | `< 2.5 s` | Fast |
-| **Total Blocking Time (TBT)** | `40 ms` | `< 200 ms` | Responsive |
-| **Cumulative Layout Shift (CLS)** | `0.000` | `< 0.1` | Stable |
-| **Speed Index (SI)** | `1.8 s` | `< 3.4 s` | Fast |
+| Metric | Measured Value | Google Recommended Threshold |
+|---|---:|---:|
+| **First Contentful Paint (FCP)** | `2.2 s` | `< 1.8 s` |
+| **Largest Contentful Paint (LCP)** | `2.4 s` | `< 2.5 s` |
+| **Total Blocking Time (TBT)** | `50 ms` | `< 200 ms` |
+| **Cumulative Layout Shift (CLS)** | `0.102` | `< 0.1` |
+| **Speed Index (SI)** | `2.2 s` | `< 3.4 s` |
 
 ---
 
 ### Key Audit Highlights
-- **Accessibility (100/100)**: Proper color contrast ratios against dark backgrounds, semantic headings (`h1`-`h6`), complete ARIA attributes (`aria-label`, `aria-expanded`, `aria-labelledby`), and full keyboard navigation.
-- **Best Practices (100/100)**: Modern HTTPS-ready asset linking, no deprecated APIs, responsive viewport configurations, and secure target `rel="noopener noreferrer"` links.
-- **SEO (100/100)**: Structured metadata with descriptive titles, OpenGraph description tags, crawler-friendly semantic HTML5 structure, and mobile-friendly touch targets.
+- **Accessibility (90/100):** Latest deployed Lighthouse audit scored 90/100 on both desktop and mobile.
+
+- **Best Practices (100/100):** Modern HTTPS-ready asset linking, no deprecated APIs, responsive viewport configurations, and secure target `rel="noopener noreferrer"` links.
+
+- **SEO (100/100):** Structured metadata with descriptive titles, OpenGraph description tags, crawler-friendly semantic HTML5 structure, and mobile-friendly touch targets.

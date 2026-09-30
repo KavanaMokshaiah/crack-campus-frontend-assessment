@@ -1,10 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, CheckCircle2, Shield, TrendingUp, Award, Code2 } from 'lucide-react';
-import heroWebp from '../../assets/hero-promo-office.webp';
+import heroDesktop from '../../assets/hero-promo-office-desktop.webp';
+import heroMobile from '../../assets/hero-promo-office-mobile.webp';
 import heroJpg from '../../assets/hero-promo-office.jpg';
-import badgeCtcHero from '../../assets/badge-ctc-hero.webp';
-
+import badgeCtcHero from '../../assets/badge-ctc-hero-optimized.webp';
 interface HeroSectionProps {
   onOpenSandbox?: () => void;
 }
@@ -35,10 +35,24 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenSandbox }) => {
         aria-hidden="true"
       >
         <picture>
-          <source srcSet={heroWebp} type="image/webp" />
+          <source
+            media="(max-width: 768px)"
+            srcSet={heroMobile}
+            type="image/webp"
+          />
+
+          <source
+            srcSet={heroDesktop}
+            type="image/webp"
+          />
+
           <img
             src={heroJpg}
             alt=""
+            width="1600"
+            height="900"
+            fetchPriority="high"
+            decoding="async"
             style={{
               position: 'absolute',
               width: '100%',

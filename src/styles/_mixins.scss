@@ -1,0 +1,93 @@
+@use 'variables' as *;
+
+// Media Queries
+@mixin xs {
+  @media (min-width: $bp-xs) {
+    @content;
+  }
+}
+
+@mixin sm {
+  @media (min-width: $bp-sm) {
+    @content;
+  }
+}
+
+@mixin md {
+  @media (min-width: $bp-md) {
+    @content;
+  }
+}
+
+@mixin lg {
+  @media (min-width: $bp-lg) {
+    @content;
+  }
+}
+
+@mixin xl {
+  @media (min-width: $bp-xl) {
+    @content;
+  }
+}
+
+// Glassmorphism card surface
+@mixin glass-panel($bg: rgba(20, 20, 24, 0.75), $blur: 16px) {
+  background: $bg;
+  backdrop-filter: blur($blur) saturate(150%);
+  -webkit-backdrop-filter: blur($blur) saturate(150%);
+  border: 1px solid $border-primary;
+  border-radius: 1rem;
+}
+
+// Flex centering helpers
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+// Container constraint
+@mixin container {
+  width: 100%;
+  max-width: $max-width;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: $container-padding-mobile;
+  padding-right: $container-padding-mobile;
+
+  @include sm {
+    padding-left: $container-padding-tablet;
+    padding-right: $container-padding-tablet;
+  }
+
+  @include lg {
+    padding-left: $container-padding-desktop;
+    padding-right: $container-padding-desktop;
+  }
+}
+
+// Gradient text
+@mixin gradient-text($gradient: linear-gradient(135deg, #ffffff 0%, #d4d4d8 100%)) {
+  background: $gradient;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+// Card hover lift with GPU acceleration
+@mixin card-hover {
+  transition: transform $transition-normal, border-color $transition-normal, box-shadow $transition-normal;
+  will-change: transform;
+
+  &:hover {
+    transform: translateY(-2px);
+    border-color: rgba(124, 58, 237, 0.4);
+    box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.8), 0 0 24px -6px rgba(124, 58, 237, 0.2);
+  }
+}
